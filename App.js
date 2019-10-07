@@ -6,7 +6,6 @@ class Add extends Component {
   constructor(props) {
     super(props)
 
-    //list data
     this.state = {
       datas: [
         'work',
@@ -19,12 +18,10 @@ class Add extends Component {
     }
   }
 
-  //inputan data
   onHandleAdd = (text) => {
     this.setState({data: text})
   }
 
-  //masukkan inputan data ke list
   onHandleBtn = () =>{
     if(this.state.data !== ''){
       let tambah = this.state.datas.concat(this.state.data)
@@ -33,9 +30,7 @@ class Add extends Component {
     }else{
       alert('Field Tidak boleh kosong!')
     }
-
   }
-
 
   render() {
 
@@ -57,17 +52,14 @@ class Add extends Component {
               onPress={this.onHandleBtn}
               >Add</Text>
           </TouchableOpacity>
-
-                 
+          
         </View>
 
             {this.state.datas.map((item) => 
             <Text style={styles.textList}>{item}</Text>)
             }
 
-      </View>
-          
-      
+      </View> 
     )
   }
 
