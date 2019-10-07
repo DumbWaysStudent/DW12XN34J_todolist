@@ -4,20 +4,23 @@ import { View, Text, StyleSheet, TextInput, TouchableOpacity, CheckBox } from 'r
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 
-class IsDone extends Component {
+class EditDo extends Component {
 
   constructor(props) {
     super(props)
 
     this.state = {
       datas: [
-        {id:1, name:'Work', done: false },
-        {id:2, name:'Run', done: false },
+        {id:1, name:'Work', done: true },
+        {id:2, name:'Swim', done: true },
         {id:3, name:'Play', done: false },
         {id:4, name:'Swim', done: false },
         {id:5, name:'Run', done: false },
       ],
       data: '',
+      titleBtn: 'Add',
+      editItem: 0,
+      editName:''
     }
   }
   onList = () => {
@@ -35,9 +38,9 @@ class IsDone extends Component {
                   {item.name}
                 </Text>
                 
-                {/* <TouchableOpacity onPress={this.onHandleEdit}>
+                <TouchableOpacity onPress={() => this.onHandledEdit(item.id, item.name)}>
                   <Icon name='edit' style={styles.btnAdd} />
-                </TouchableOpacity> */}
+                </TouchableOpacity>
                 
                 <TouchableOpacity onPress={() => this.onHandleDelete(item.id)}>
                   <Icon name='trash' style={styles.btnDel} />
@@ -47,30 +50,35 @@ class IsDone extends Component {
       })
   }
 
-  //inputan data
   onHandleAdd = (text) => {
     this.setState({data: text})
   }
 
-  //masukkan inputan data ke list
-  onHandleBtn = () =>{
-    if(this.state.data !== ''){
-      let tambah = this.state.datas.length,
-    newInput = [{
-      id: tambah + 1,
-      name: this.state.data,
-      done:false
-    }]
-
-    this.setState({datas: [...this.state.datas, ...newInput]});
-    this.setState({data: ''})
-    }else{
-      alert('Field Tidak Boleh Kosong')
-    }
-    
+  onHandleBtn = (input) =>{
+      if(this.state.data !== ''){
+        if(input == 'Add'){
+            let tambah = this.state.datas.length,
+            newInput = [{
+                id: tambah + 1,
+                name : this.state.data,
+                done : false
+            }]
+            this.setState({datas: [...this.state.datas, ...newInput]});
+            this.setState({data:''})
+        }else if(input == 'Edit'){
+          let name = this.state.editName
+          let index = this.state.datas.findIndex((x) => x.name == name)
+            this.setState((state) => {
+              return state.datas[index].name = state.data
+            })
+            this.setState({data: '', titleBtn: 'Add'})      
+        }
+      }else{
+          alert('Field Tidak Boleh Kosong')
+      }
+      
   }
 
-  //delete data by id
   onHandleDelete = (id) =>{
     this.setState({
         datas: this.state.datas.filter((datas) => {
@@ -92,6 +100,11 @@ class IsDone extends Component {
     }
   }
 
+  onHandledEdit = (id, name) =>{
+      this.setState({data : name, titleBtn: 'Edit', editName: name})
+      this.setState({editItem: (id -1)})
+  }
+
 
   render() {
 
@@ -110,8 +123,8 @@ class IsDone extends Component {
           <TouchableOpacity style={styles.btn}>
               <Text
               style={styles.txtB}
-              onPress={this.onHandleBtn}
-              >Add</Text>
+              onPress={() => this.onHandleBtn(this.state.titleBtn)}
+              >{this.state.titleBtn}</Text>
           </TouchableOpacity>
 
                  
@@ -176,13 +189,13 @@ const styles = StyleSheet.create({
       color:'red',
       
   },
-//   btnAdd:{
-//     fontSize:30,
-//     marginTop:20,
-//     padding:10,
-//     color:'green',
+  btnAdd:{
+    fontSize:30,
+    marginTop:20,
+    padding:10,
+    color:'green',
     
-// },
+},
   txtEdDl:{
       textAlign:'center',
       paddingTop:7,
@@ -192,4 +205,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default IsDone;
+export default EditDo;
