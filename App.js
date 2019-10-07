@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, FlatList, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import { Container } from 'native-base';
 
 class ListDo extends Component {
