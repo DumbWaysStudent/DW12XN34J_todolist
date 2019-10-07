@@ -28,10 +28,6 @@ class Delete extends Component {
                 {item.name}
                 </Text>
 
-                {/* <TouchableOpacity onPress={this.onHandleEdit}>
-                  <Icon name='edit' style={styles.btnAdd} />
-                </TouchableOpacity> */}
-
                 <TouchableOpacity onPress={() => this.onHandleDelete(item.id)}>
                   <Icon name='trash' style={styles.btnDel} />
                 </TouchableOpacity>  
@@ -39,6 +35,7 @@ class Delete extends Component {
         );
       })
   }
+
   onHandleAdd = (text) => {
     this.setState({data: text})
   }
@@ -148,12 +145,6 @@ const styles = StyleSheet.create({
       marginTop:20,
       
   },
-  // btnAdd:{
-  //   fontSize:30,
-  //   marginTop:20,
-  //   padding:10,
-  //   color:'green',
-  // },
   txtEdDl:{
       textAlign:'center',
       paddingTop:7,
