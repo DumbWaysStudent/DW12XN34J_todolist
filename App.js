@@ -1,21 +1,21 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, List } from 'react-native'
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, CheckBox } from 'react-native'
 
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 
-class Delete extends Component {
+class IsDone extends Component {
 
   constructor(props) {
     super(props)
 
     this.state = {
       datas: [
-        {id:1, name:'Work'},
-        {id:2, name:'swim'},
-        {id:3, name:'play'},
-        {id:4, name:'sleep'},
-        {id:5, name:'run'},
+        {id:1, name:'Work', done: false },
+        {id:2, name:'Run', done: false },
+        {id:3, name:'Play', done: false },
+        {id:4, name:'Swim', done: false },
+        {id:5, name:'Run', done: false },
       ],
       data: '',
     }
@@ -24,14 +24,21 @@ class Delete extends Component {
       return this.state.datas.map((item) => {
         return (
             <View style={styles.direcL}>
-                <Text style={styles.textList}>
-                {item.name}
-                </Text>
+            
+                <CheckBox
+                    style={styles.check}
+                    value={item.done}
+                    onValueChange={() => this.onHandleCheckbox(item.id)}
+                />
 
+                <Text style={styles.textList}>
+                  {item.name}
+                </Text>
+                
                 {/* <TouchableOpacity onPress={this.onHandleEdit}>
                   <Icon name='edit' style={styles.btnAdd} />
                 </TouchableOpacity> */}
-
+                
                 <TouchableOpacity onPress={() => this.onHandleDelete(item.id)}>
                   <Icon name='trash' style={styles.btnDel} />
                 </TouchableOpacity>  
@@ -39,15 +46,20 @@ class Delete extends Component {
         );
       })
   }
+
+  //inputan data
   onHandleAdd = (text) => {
     this.setState({data: text})
   }
+
+  //masukkan inputan data ke list
   onHandleBtn = () =>{
     if(this.state.data !== ''){
       let tambah = this.state.datas.length,
     newInput = [{
       id: tambah + 1,
-      name: this.state.data
+      name: this.state.data,
+      done:false
     }]
 
     this.setState({datas: [...this.state.datas, ...newInput]});
@@ -58,12 +70,26 @@ class Delete extends Component {
     
   }
 
+  //delete data by id
   onHandleDelete = (id) =>{
     this.setState({
         datas: this.state.datas.filter((datas) => {
           return datas.id !== id
         })
     })
+  }
+
+  onHandleCheckbox = (id) =>{  
+    let index = this.state.datas.findIndex((x) => x.id == id);
+    if (this.state.datas[index].done == false) {
+      this.setState((state) => {
+        return state.datas[index].done = true
+      })
+    } else {
+      this.setState((state) => {
+        return state.datas[index].done = false
+      })
+    }
   }
 
 
@@ -104,8 +130,8 @@ class Delete extends Component {
 const styles = StyleSheet.create({
   textList: {
     fontSize: 28,
-    flex: 8,
-    paddingBottom:30,
+    flex:8,
+    paddingTop:30,
   },
   inputTxt:{
     width:'80%',
@@ -114,14 +140,15 @@ const styles = StyleSheet.create({
     borderWidth:2,
     fontSize:18,
     marginTop:10,
-    marginRight:10,
+    marginRight:5,
+
   },
   btn:{
     borderRadius:2,
     backgroundColor:'blue',
     width:70,
     height:50,
-    marginTop:10
+    marginTop:10,
   },
   txtB:{
     textAlign:'center',
@@ -136,6 +163,7 @@ const styles = StyleSheet.create({
     paddingBottom:50,
     alignItems:'center',
     
+    
   },
   direcL:{
       flexDirection:'row',
@@ -143,21 +171,25 @@ const styles = StyleSheet.create({
   },
   btnDel:{
       fontSize:30,
+      marginTop:20,
       padding:10,
       color:'red',
-      marginTop:20,
       
   },
-  // btnAdd:{
-  //   fontSize:30,
-  //   marginTop:20,
-  //   padding:10,
-  //   color:'green',
-  // },
+//   btnAdd:{
+//     fontSize:30,
+//     marginTop:20,
+//     padding:10,
+//     color:'green',
+    
+// },
   txtEdDl:{
       textAlign:'center',
       paddingTop:7,
+  },
+  check:{
+    marginTop:35,
   }
 })
 
-export default Delete;
+export default IsDone;
