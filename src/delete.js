@@ -60,7 +60,9 @@ class Delete extends Component {
 
   onHandleDelete = (id) =>{
     this.setState({
-        datas : this.state.datas.filter(datas => datas.id !== id)
+        datas: this.state.datas.filter((datas) => {
+          return datas.id !== id
+        })
     })
   }
 

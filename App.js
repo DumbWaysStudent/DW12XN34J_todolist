@@ -1,39 +1,69 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Button } from 'react-native'
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, List } from 'react-native'
 
-class Add extends Component {
+import Icon from 'react-native-vector-icons/FontAwesome5';
+
+
+class Delete extends Component {
 
   constructor(props) {
     super(props)
 
-    //list data
     this.state = {
       datas: [
-        'work',
-        'swim',
-        'study',
-        'sleep',
-        'run',
+        {id:1, name:'Work'},
+        {id:2, name:'swim'},
+        {id:3, name:'play'},
+        {id:4, name:'sleep'},
+        {id:5, name:'run'},
       ],
       data: '',
     }
   }
+  onList = () => {
+      return this.state.datas.map((item) => {
+        return (
+            <View style={styles.direcL}>
+                <Text style={styles.textList}>
+                {item.name}
+                </Text>
 
-  //inputan data
+                {/* <TouchableOpacity onPress={this.onHandleEdit}>
+                  <Icon name='edit' style={styles.btnAdd} />
+                </TouchableOpacity> */}
+
+                <TouchableOpacity onPress={() => this.onHandleDelete(item.id)}>
+                  <Icon name='trash' style={styles.btnDel} />
+                </TouchableOpacity>  
+            </View>
+        );
+      })
+  }
   onHandleAdd = (text) => {
     this.setState({data: text})
   }
-
-  //masukkan inputan data ke list
   onHandleBtn = () =>{
     if(this.state.data !== ''){
-      let tambah = this.state.datas.concat(this.state.data)
-      this.setState({datas: tambah})
-      this.setState({data: ''})
-    }else{
-      alert('Field Tidak boleh kosong!')
-    }
+      let tambah = this.state.datas.length,
+    newInput = [{
+      id: tambah + 1,
+      name: this.state.data
+    }]
 
+    this.setState({datas: [...this.state.datas, ...newInput]});
+    this.setState({data: ''})
+    }else{
+      alert('Field Tidak Boleh Kosong')
+    }
+    
+  }
+
+  onHandleDelete = (id) =>{
+    this.setState({
+        datas: this.state.datas.filter((datas) => {
+          return datas.id !== id
+        })
+    })
   }
 
 
@@ -42,7 +72,7 @@ class Add extends Component {
     return (
 
       <View>
-        
+
         <View style={styles.direc}>
               
           <TextInput style={styles.inputTxt}
@@ -50,7 +80,7 @@ class Add extends Component {
             type='text'
             onChangeText={(text) => this.onHandleAdd(text)} value={this.state.data}
           />
-
+            
           <TouchableOpacity style={styles.btn}>
               <Text
               style={styles.txtB}
@@ -60,11 +90,9 @@ class Add extends Component {
 
                  
         </View>
-
-            {this.state.datas.map((item) => 
-            <Text style={styles.textList}>{item}</Text>)
-            }
-
+            
+            {this.onList()}
+            
       </View>
           
       
@@ -76,21 +104,24 @@ class Add extends Component {
 const styles = StyleSheet.create({
   textList: {
     fontSize: 28,
-    borderBottomWidth: 2,
+    flex: 8,
+    paddingBottom:30,
   },
   inputTxt:{
     width:'80%',
-    borderColor:'red',
+    borderColor:'black',
     height:50,
     borderWidth:2,
     fontSize:18,
-
+    marginTop:10,
+    marginRight:10,
   },
   btn:{
     borderRadius:2,
     backgroundColor:'blue',
     width:70,
     height:50,
+    marginTop:10
   },
   txtB:{
     textAlign:'center',
@@ -106,6 +137,27 @@ const styles = StyleSheet.create({
     alignItems:'center',
     
   },
+  direcL:{
+      flexDirection:'row',
+      borderBottomWidth:2,
+  },
+  btnDel:{
+      fontSize:30,
+      padding:10,
+      color:'red',
+      marginTop:20,
+      
+  },
+  // btnAdd:{
+  //   fontSize:30,
+  //   marginTop:20,
+  //   padding:10,
+  //   color:'green',
+  // },
+  txtEdDl:{
+      textAlign:'center',
+      paddingTop:7,
+  }
 })
 
-export default Add;
+export default Delete;
